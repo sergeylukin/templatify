@@ -47,7 +47,9 @@ $('#color-dropdown').templatify({
 	template: '#dropdown-template',
 	onComplete: function() {
 		// this should point to newly created element
-		console.log(this);
+		console.dir(this);
+		// this contains templatify instance with all its properies
+		console.dir(this.data());
 	}
 });
 </script>

@@ -43,8 +43,6 @@ if ( typeof Object.create !== 'function' ) {
 			// Apply values to template and attach it to DOM
 			self.view();
 
-			
-
 		},
 
 		model: function() {
@@ -80,17 +78,13 @@ if ( typeof Object.create !== 'function' ) {
 		},
 
 		view: function() {
-			var template = Handlebars.compile( this.options.template ),
-				// Append rendered template to DOM and save new element in variable
-				newElement = this.$container.after( template( this.data ) ).next();
+			var template = Handlebars.compile( this.options.template );
+			
+			// Append rendered template to DOM and save new element in variable
+			this.$newElement = this.$container.after( template( this.data ) ).next();
 
 			// Delete old element
 			this.$container.remove();
-
-			// Execute user's function when done
-			if( typeof this.options.onComplete === 'function' ) {
-				this.options.onComplete.apply(newElement, arguments);
-			}
 
 		}
 
@@ -104,7 +98,14 @@ if ( typeof Object.create !== 'function' ) {
 			var templatify = Object.create( Templatify );
 			templatify.init( options, this );
 
-			$.data( this, 'templatify', templatify );
+			// Save instance in newly created element
+			templatify.$newElement.data('templatify', templatify );
+
+			// Execute user's function when done
+			if( typeof templatify.options.onComplete === 'function' ) {
+				templatify.options.onComplete.apply(templatify.$newElement, arguments);
+			}
+
 		});
 	};
 
