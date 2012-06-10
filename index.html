@@ -16,23 +16,25 @@
 
 
 <script id="dropdown-template" type="text/x-handlebars-template">
-	<a href="#">{{selected.html}} | {{title}}</a>
-	<table>
-		<thead>
-		<tr>
-			<th>Color</th>
-			<th>Comment</th>
-		</tr>
-		</thead>
-		<tbody>
-		{{#each items}}
+	<div>
+		<a href="#">{{selected.html}} | {{title}}</a>
+		<table>
+			<thead>
 			<tr>
-				<td>{{html}}</td>
-				<td>{{comment}}</td>
+				<th>Color</th>
+				<th>Comment</th>
 			</tr>
-		{{/each}}
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+			{{#each items}}
+				<tr>
+					<td>{{html}}</td>
+					<td>{{comment}}</td>
+				</tr>
+			{{/each}}
+			</tbody>
+		</table>
+	</div>
 </script>
 
 
@@ -41,7 +43,13 @@
 <script src="http://cloud.github.com/downloads/wycats/handlebars.js/handlebars-1.0.0.beta.6.js"></script>
 <script src="templatify.jquery.js"></script>
 <script>
-$('#color-dropdown').templatify('#dropdown-template');
+$('#color-dropdown').templatify({
+	template: '#dropdown-template',
+	onComplete: function() {
+		// this should point to newly created element
+		console.log(this);
+	}
+});
 </script>
 
 </body>

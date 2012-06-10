@@ -80,13 +80,16 @@ if ( typeof Object.create !== 'function' ) {
 		},
 
 		view: function() {
-			var template = Handlebars.compile( this.options.template );
+			var template = Handlebars.compile( this.options.template ),
+				// Append rendered template to DOM and save new element in variable
+				newElement = this.$container.after( template( this.data ) ).next();
 
-			this.$container.after( template( this.data ) ).remove();
+			// Delete old element
+			this.$container.remove();
 
 			// Execute user's function when done
 			if( typeof this.options.onComplete === 'function' ) {
-				this.options.onComplete.apply(this.$container, arguments);
+				this.options.onComplete.apply(newElement, arguments);
 			}
 
 		}
