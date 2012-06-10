@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset=utf-8>
+	<title>Templatify plugin</title>
+</head>
+<body>
+
+<form action="" method="GET" id="color-dropdown">
+	<select name="color" onchange="this.form.submit();" data-title="This title is optional">
+		<option value="1" data-comment="Energy" selected>Orange</option>
+		<option value="2" data-comment="Calm">Grey</option>
+		<option value="3" data-comment="Space">White</option>
+	</select>
+</form>
+
+
+<script id="dropdown-template" type="text/x-handlebars-template">
+	<a href="#">{{selected.html}} | {{title}}</a>
+	<table>
+		<thead>
+		<tr>
+			<th>Color</th>
+			<th>Comment</th>
+		</tr>
+		</thead>
+		<tbody>
+		{{#each items}}
+			<tr>
+				<td>{{html}}</td>
+				<td>{{comment}}</td>
+			</tr>
+		{{/each}}
+		</tbody>
+	</table>
+</script>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="http://cloud.github.com/downloads/wycats/handlebars.js/handlebars-1.0.0.beta.6.js"></script>
+<script src="templatify.jquery.js"></script>
+<script>
+$('#color-dropdown').templatify('#dropdown-template');
+</script>
+
+</body>
+</html>
+
+
+
