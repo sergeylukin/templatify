@@ -11,20 +11,20 @@ if ( typeof Object.create !== 'function' ) {
 (function($, window, document, undefined) {
 
 	var Templatify = {
-		init: function( options, container ) {
+		init: function( options, elem ) {
 			var self = this;
 
-			// Set container of element that will be replaced
-			self.$container = $( container ); // jQuery object of HTML element
-
 			// Set element that will be replaced
-			if( self.$container.is('select') ) {
-				self.$elementToBeReplaced = self.$container;
-			} else {
-				self.$elementToBeReplaced = self.$container.find('select');
+			self.$elem = $( elem ); // jQuery object of HTML element
+
+			// For now - only <SELECT> element is supported..
+			// Probably will be changed in future
+			if( !self.$elem.is('select') ) {
+				return false;
 			}
 
-			// Allow passing just name of template as only argument
+
+			// If a string was passed as an only option - pass it as if it is name of template
 			if( typeof options === 'string' ) {
 				options = { template: options };
 			}
@@ -51,14 +51,14 @@ if ( typeof Object.create !== 'function' ) {
 				};
 
 			// Insert nodes data-* attributes in data object
-			$.each(this.$elementToBeReplaced.children(), function(key, element) {
-				var $element = $( element ),
-					attributes = $element.data();
+			$.each(this.$elem.children(), function(key, node) {
+				var $node = $( node ),
+					attributes = $node.data();
 
 				// Added selected attribute to the item's object
-				attributes.selected = $element.is(':selected');
-				attributes.value = $element.val();
-				attributes.html = $element.html();
+				attributes.selected = $node.is(':selected');
+				attributes.value = $node.val();
+				attributes.html = $node.html();
 
 				// Add item's object to data object
 			    data.items.push( attributes );
@@ -70,7 +70,7 @@ if ( typeof Object.create !== 'function' ) {
 			});
 
 			// Add all data-* attributes of select in data object
-			data = $.extend( {}, data, this.$elementToBeReplaced.data() );
+			data = $.extend( {}, data, this.$elem.data() );
 
 			// Make data object available to other methods
 			this.data = data;
@@ -81,10 +81,10 @@ if ( typeof Object.create !== 'function' ) {
 			var template = Handlebars.compile( this.options.template );
 			
 			// Append rendered template to DOM and save new element in variable
-			this.$newElement = this.$container.after( template( this.data ) ).next();
+			this.$newElement = this.$elem.after( template( this.data ) ).next();
 
 			// Delete old element
-			this.$container.remove();
+			this.$elem.remove();
 
 		}
 

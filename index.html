@@ -6,12 +6,13 @@
 </head>
 <body>
 
-<form action="" method="GET" id="color-dropdown">
-	<select name="color" onchange="this.form.submit();" data-title="This title is optional">
+<form action="" method="GET">
+	<select name="color" data-title="This title is optional" id="color-dropdown">
 		<option value="1" data-comment="Energy" selected>Orange</option>
 		<option value="2" data-comment="Calm">Grey</option>
 		<option value="3" data-comment="Space">White</option>
 	</select>
+	<input type="submit" value="Apply" />
 </form>
 
 
@@ -46,6 +47,19 @@
 $('#color-dropdown').templatify({
 	template: '#dropdown-template',
 	onComplete: function() {
+		/////////////////////////////////
+		// Custom manipulations after the plugin has finished it's work
+		///////////////////////////////
+		var form = this.parent();
+		// Move newly created element after it's parent
+		this.insertAfter( form );
+		// ..and remove the parent..
+		form.remove();
+
+
+		/////////////////////////////////
+		// Some debugging..
+		///////////////////////////////
 		// this should point to newly created element
 		console.dir(this);
 		// this contains templatify instance with all its properies
